@@ -10,7 +10,8 @@ services:
       - ./docuseal:/data/docuseal
     environment:
       - FORCE_SSL=${HOST}
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
+      - DATABASE_URL=${DATABASE_URL}
+      # DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
 
   postgres:
     image: postgres:15
@@ -19,7 +20,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: docuseal
+      POSTGRES_DB: database
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

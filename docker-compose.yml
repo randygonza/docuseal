@@ -10,8 +10,7 @@ services:
       - ./docuseal:/data/docuseal
     environment:
       - FORCE_SSL=${HOST}
-      - DATABASE_URL=${DATABASE_URL}
-      # DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
 
   postgres:
     image: postgres:15

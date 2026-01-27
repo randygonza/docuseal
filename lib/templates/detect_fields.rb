@@ -59,25 +59,27 @@ module Templates
     CHECKBOXES = ['☐', '□'].freeze
 
     # rubocop:disable Metrics, Style
-    def call(io, attachment: nil, confidence: 0.3, temperature: 1, inference: Templates::ImageToFields,
-             nms: 0.1, split_page: false, aspect_ratio: true, padding: 20, regexp_type: true, &)
+    def call(io, attachment: nil, confidence: 0.3, temperature: 1, inference: Templates::ImageToFields, nms: 0.1,
+             nmm: 0.5, split_page: false, aspect_ratio: true, padding: 20, regexp_type: true, page_number: nil, &)
       fields, head_node =
         if attachment&.image?
-          process_image_attachment(io, attachment:, confidence:, nms:, split_page:, inference:,
-                                       temperature:, aspect_ratio:, padding:, &)
+          process_image_attachment(io, attachment:, confidence:, nms:, nmm:, split_page:, inference:,
+                                       temperature:, aspect_ratio:, padding:, page_number:, &)
         else
-          process_pdf_attachment(io, attachment:, confidence:, nms:, split_page:, inference:,
-                                     temperature:, aspect_ratio:, regexp_type:, padding:, &)
+          process_pdf_attachment(io, attachment:, confidence:, nms:, nmm:, split_page:, inference:,
+                                     temperature:, aspect_ratio:, regexp_type:, padding:, page_number:, &)
         end
 
       [fields, head_node]
     end
 
-    def process_image_attachment(io, attachment:, confidence:, nms:, temperature:, inference:,
-                                 split_page: false, aspect_ratio: false, padding: nil)
+    def process_image_attachment(io, attachment:, confidence:, nms:, nmm:, temperature:, inference:,
+                                 split_page: false, aspect_ratio: false, padding: nil, page_number: nil)
+      return [[], nil] if page_number && page_number != 0
+
       image = Vips::Image.new_from_buffer(io.read, '')
 
-      fields = inference.call(image, confidence:, nms:, split_page:,
+      fields = inference.call(image, confidence:, nms:, nmm:, split_page:,
                                      temperature:, aspect_ratio:, padding:)
 
       fields = sort_fields(fields, y_threshold: 10.0 / image.height)
@@ -104,21 +106,29 @@ module Templates
       [fields, nil]
     end
 
-    def process_pdf_attachment(io, attachment:, confidence:, nms:, temperature:, inference:,
-                               split_page: false, aspect_ratio: false, padding: nil, regexp_type: false)
+    def process_pdf_attachment(io, attachment:, confidence:, nms:, nmm:, temperature:, inference:,
+                               split_page: false, aspect_ratio: false, padding: nil, regexp_type: false,
+                               page_number: nil)
       doc = Pdfium::Document.open_bytes(io.read)
 
       head_node = PageNode.new(elem: ''.b, page: 0, attachment_uuid: attachment&.uuid)
       tail_node = head_node
 
-      fields = doc.page_count.times.flat_map do |page_number|
-        page = doc.get_page(page_number)
+      page_range = page_number ? [page_number] : (0...doc.page_count)
 
-        data, width, height = page.render_to_bitmap(width: inference::RESOLUTION * 1.5)
+      fields = page_range.flat_map do |current_page_number|
+        next [] if current_page_number >= doc.page_count
+
+        page = doc.get_page(current_page_number)
+
+        size_key = page.width > page.height ? :width : :height
+        size = padding ? inference.resolution * 1.5 : inference.resolution
+
+        data, width, height = page.render_to_bitmap(size_key => size)
 
         image = Vips::Image.new_from_memory(data, width, height, 4, :uchar)
 
-        fields = inference.call(image, confidence: confidence / 4.0, nms:, split_page:,
+        fields = inference.call(image, confidence: confidence / 3.0, nms:, nmm:, split_page:,
                                        temperature:, aspect_ratio:, padding:)
 
         text_fields = extract_text_fields_from_page(page)
@@ -126,8 +136,8 @@ module Templates
 
         fields = sort_fields(fields, y_threshold: 10.0 / image.height)
 
-        fields = increase_confidence_for_overlapping_fields(fields, text_fields)
-        fields = increase_confidence_for_overlapping_fields(fields, line_fields)
+        fields = increase_confidence_for_overlapping_fields(fields, text_fields, confidence:)
+        fields = increase_confidence_for_overlapping_fields(fields, line_fields, confidence:)
 
         fields = fields.reject { |f| f.confidence < confidence }
 
@@ -146,13 +156,13 @@ module Templates
             areas: [{
               x: field.x, y: field.y,
               w: field.w, h: field.h,
-              page: page_number,
+              page: current_page_number,
               attachment_uuid: attachment&.uuid
             }]
           }
         end
 
-        yield [attachment&.uuid, page_number, fields] if block_given?
+        yield [attachment&.uuid, current_page_number, fields] if block_given?
 
         fields
       ensure
@@ -477,10 +487,11 @@ module Templates
       !(box1.endx < box2.x || box2.endx < box1.x || box1.endy < box2.y || box2.endy < box1.y)
     end
 
-    def increase_confidence_for_overlapping_fields(image_fields, text_fields, by: 1.0)
+    def increase_confidence_for_overlapping_fields(image_fields, text_fields, confidence: 1, by: 1.0)
       return image_fields if text_fields.blank?
 
       image_fields.map do |image_field|
+        next if image_field.confidence >= confidence
         next if image_field.type != 'text'
 
         text_fields.each do |text_field|

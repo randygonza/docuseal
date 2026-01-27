@@ -133,7 +133,7 @@
                     <% bg_class = bg_classes[submitter_index % bg_classes.size] %>
                     <div class="absolute overflow-visible" style="width: <%= area['w'] * 100 %>%; height: <%= area['h'] * 100 %>%; left: <%= area['x'] * 100 %>%; top: <%= area['y'] * 100 %>%;">
                       <div class="flex h-full w-full bg-opacity-80 justify-center items-center <%= bg_class %>">
-                        <%= svg_icon(SubmissionsController::FIELD_ICONS[field['type']], class: 'max-h-10 w-full h-full stroke-2 opacity-50') %>
+                        <%= svg_icon(SubmissionsController::FIELD_ICONS.fetch(field['type'], 'text_size'), class: 'max-h-10 w-full h-full stroke-2 opacity-50') %>
                       </div>
                     </div>
                   <% end %>
@@ -262,7 +262,7 @@
                   <div class="w-full bg-base-300 py-1">
                     <img class="object-contain mx-auto" style="max-height: <%= field['type'] == 'signature' ? 100 : 50 %>px" height="<%= attachments_index[value].metadata['height'] %>" width="<%= attachments_index[value].metadata['width'] %>" src="<%= attachments_index[value].url %>" loading="lazy">
                   </div>
-                <% elsif field['type'].in?(['image', 'stamp']) && attachments_index[value].image? %>
+                <% elsif field['type'].in?(['image', 'stamp', 'kba']) && attachments_index[value].image? %>
                   <img class="object-contain mx-auto max-h-28" style="max-height: 200px" height="<%= attachments_index[value].metadata['height'] %>" width="<%= attachments_index[value].metadata['width'] %>" src="<%= attachments_index[value].url %>" loading="lazy">
                 <% elsif field['type'].in?(['file', 'payment', 'image']) %>
                   <div class="flex flex-col justify-center">

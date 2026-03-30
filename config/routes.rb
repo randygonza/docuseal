@@ -53,9 +53,10 @@ Rails.application.routes.draw do
   resources :verify_pdf_signature, only: %i[create]
   resource :mfa_setup, only: %i[show new edit create destroy], controller: 'mfa_setup'
   resources :account_configs, only: %i[create destroy]
+  resources :account_custom_fields, only: %i[create]
   resources :user_configs, only: %i[create]
   resources :encrypted_user_configs, only: %i[destroy]
-  resources :timestamp_server, only: %i[create]
+  resources :timestamp_server, only: %i[create] unless Docuseal.multitenant?
   resources :dashboard, only: %i[index]
   resources :setup, only: %i[index create]
   resource :newsletter, only: %i[show update]
@@ -110,7 +111,7 @@ Rails.application.routes.draw do
     resources :prefillable_fields, only: %i[create], controller: 'templates_prefillable_fields'
     resources :submissions_export, only: %i[index new]
   end
-  resources :preview_document_page, only: %i[show], path: '/preview/:signed_uuid'
+  resources :preview_document_page, only: %i[show], path: '/preview/:signed_key'
   resource :blobs_proxy, only: %i[show], path: '/file/:signed_uuid/*filename',
                          controller: 'api/active_storage_blobs_proxy'
   resource :blobs_proxy, only: %i[show], path: '/blobs_proxy/:signed_uuid/*filename',
@@ -167,6 +168,7 @@ Rails.application.routes.draw do
       resources :storage, only: %i[index create], controller: 'storage_settings'
       resources :search_entries_reindex, only: %i[create]
       resources :sms, only: %i[index], controller: 'sms_settings'
+      resources :mcp, only: %i[index new create destroy], controller: 'mcp_settings'
     end
     if Docuseal.demo? || !Docuseal.multitenant?
       resources :api, only: %i[index create], controller: 'api_settings'
@@ -199,6 +201,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  match '/mcp', to: 'mcp#call', via: %i[get post]
 
   get '/js/:filename', to: 'embed_scripts#show', as: :embed_script
 

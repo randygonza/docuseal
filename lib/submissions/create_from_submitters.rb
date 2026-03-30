@@ -56,18 +56,22 @@ module Submissions
             template_submitter = template_submitters.find { |e| e['uuid'] == uuid }
           end
 
-          template_submitter = template_submitter.except('optional_invite_by_uuid', 'invite_by_uuid')
+          template_submitter = template_submitter.except('optional_invite_by_uuid', 'invite_by_uuid',
+                                                         'invite_via_field_uuid')
+
           template_submitter['order'] = submitter_attrs['order'] if submitter_attrs['order'].present?
 
           submission.template_submitters << template_submitter
 
-          is_order_sent = submitters_order == 'random' || (template_submitter['order'] || index).zero?
+          is_order_sent = submitters_order == 'random' ||
+                          (template_submitter['order'] || submitter_attrs[:index] || index).zero?
 
           build_submitter(submission:, attrs: submitter_attrs,
                           uuid:, is_order_sent:, user:, params:,
                           preferences: preferences.merge(submission_preferences))
         end
 
+        maybe_set_dynamic_documents(submission)
         maybe_set_template_fields(submission, attrs[:submitters], with_template:, new_fields:)
 
         if submission.submitters.size > template.submitters.size
@@ -94,6 +98,44 @@ module Submissions
       submissions
     end
 
+    def maybe_set_dynamic_documents(submission)
+      return submission unless submission.template_id?
+
+      template = submission.template
+
+      return submission if template.variables_schema.present? ||
+                           submission.variables_schema.present?
+
+      areas_index = {}
+      submission.template_schema = []
+
+      template.schema.each do |item|
+        if item['dynamic']
+          dynamic_document = template.schema_dynamic_documents.find { |e| e.uuid == item['attachment_uuid'] }
+
+          dynamic_document_version = DynamicDocuments::EnsureVersionGenerated.call(dynamic_document)
+
+          dynamic_document_version.areas.each { |area| areas_index[area['uuid']] = area }
+
+          submission.template_schema << item.deep_dup.merge('dynamic_document_sha1' => dynamic_document.sha1)
+        else
+          submission.template_schema << item.deep_dup
+        end
+      end
+
+      submission.template_fields = template.fields.deep_dup
+
+      submission.template_fields.each do |field|
+        field['areas'].to_a.each do |area|
+          dynamic_area = areas_index[area['uuid']]
+
+          area.merge!(dynamic_area) if dynamic_area
+        end
+      end
+
+      submission
+    end
+
     def maybe_enqueue_expire_at(submissions)
       submissions.each do |submission|
         next unless submission.expire_at?
@@ -112,8 +154,13 @@ module Submissions
           item = item.merge('invite_by_uuid' => invite_by_uuid) if invite_by_uuid
         end
 
-        next if item['invite_by_uuid'].blank? && item['optional_invite_by_uuid'].blank?
+        next if item['invite_by_uuid'].blank? &&
+                item['optional_invite_by_uuid'].blank? &&
+                item['invite_via_field_uuid'].blank?
+
         next if submission.template_submitters.any? { |e| e['uuid'] == item['uuid'] }
+
+        item = item.merge('order' => submitter_attr['order']) if submitter_attr && submitter_attr['order'].present?
 
         if index.zero?
           submission.template_submitters.insert(1, item)
@@ -151,7 +198,8 @@ module Submissions
       end
 
       if template_fields != (submission.template_fields || submission.template.fields) || new_fields.present? ||
-         submitters_attrs.any? { |e| e[:completed].present? } || !with_template || submission.variables.present?
+         submitters_attrs.any? { |e| e[:completed].present? } || !with_template || submission.variables.present? ||
+         submission.template&.variables_schema.present?
         submission.template_fields = new_fields ? new_fields + template_fields : template_fields
         submission.template_schema = submission.template.schema if submission.template_schema.blank?
         submission.variables_schema = submission.template.variables_schema if submission.template &&
@@ -306,7 +354,7 @@ module Submissions
       uuid = attrs[:uuid].presence
       uuid ||= submitters.find { |e| e['name'].to_s.casecmp(attrs[:role].to_s).zero? }&.dig('uuid')
 
-      uuid || submitters[index]&.dig('uuid')
+      uuid || submitters[attrs[:index] || index]&.dig('uuid')
     end
 
     def build_submitter(submission:, attrs:, uuid:, is_order_sent:, user:, preferences:, params:)

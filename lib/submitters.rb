@@ -2,7 +2,6 @@
 
 module Submitters
   TRUE_VALUES = ['1', 'true', true].freeze
-  PRELOAD_ALL_PAGES_AMOUNT = 200
 
   FIELD_NAME_WEIGHTS = {
     'email' => 'A',
@@ -14,6 +13,7 @@ module Submitters
   UnableToSendCode = Class.new(StandardError)
   InvalidOtp = Class.new(StandardError)
   MaliciousFileExtension = Class.new(StandardError)
+  ArgumentError = Class.new(StandardError)
 
   DANGEROUS_EXTENSIONS = Set.new(%w[
     exe com bat cmd scr pif vbs vbe js jse wsf wsh msi msp
@@ -133,7 +133,7 @@ module Submitters
                                                filename: file.original_filename,
                                                content_type: file.content_type)
       else
-        ActiveStorage::Blob.find_signed(params[:blob_signed_id])
+        raise ArgumentError, 'file param is missing'
       end
 
     ActiveStorage::Attachment.create!(

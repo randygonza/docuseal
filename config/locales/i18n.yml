@@ -29,6 +29,9 @@ en: &en
   pro: Pro
   thanks: Thanks
   private: Private
+  _variables: Variables
+  make_all_newly_created_templates_private_to_their_creator_and_admins_by_default: Make all newly created templates private to their creator and admins by default.
+  create_templates_with_admin_access_by_default: Create templates with admin access by default
   require_email_2fa: Require email 2FA
   when_checked_each_signer_must_verify_their_email_with_a_one_time_code_before_accessing_the_document: When checked, each signer must verify their email with a one-time code before accessing the document.
   require_phone_2fa: Require phone 2FA
@@ -42,7 +45,7 @@ en: &en
   click_here_to_send_a_reset_password_email_html: '<label class="link" for="resend_password_button">Click here</label> to send a reset password email.'
   edit_order: Edit Order
   expirable_file_download_links: Expirable file download links
-  invite_form_fields: Invite form fields
+  sender_form_fields: Sender form fields
   default_parties: Default parties
   authenticate_embedded_form_preview_with_token: Authenticate embedded form preview with token
   stripe_integration: Stripe Integration
@@ -216,7 +219,7 @@ en: &en
   copy: Copy
   copied: Copied
   rotate: Rotate
-  remove_existing_api_token_and_generated_a_new_one_are_you_sure_: Remove existing API token and generated a new one. Are you sure?
+  remove_existing_api_token_and_generated_a_new_one_are_you_sure_: Remove existing API token and generate a new one. Are you sure?
   request_signature_multiple_submitters_with_default_values: Request signature, multiple submitters with default values
   request_signature_single_submitter: Request signature, single submitter
   template_details: Template details
@@ -328,13 +331,13 @@ en: &en
   initials: Initials
   update_initials: Update Initials
   unable_to_save_initials: Unable to save initials.
-  initials_has_been_saved: Initials has been saved.
-  initials_has_been_removed: Initials has been removed.
+  initials_has_been_saved: Initials have been saved.
+  initials_has_been_removed: Initials have been removed.
   change_password: Change Password
   two_factor_authentication: Two-Factor Authentication
   2fa_is_not_configured: 2FA is not configured
   set_up_2fa: Set up 2FA
-  contact_information_has_been_update: Contact information has been update.
+  contact_information_has_been_update: Contact information has been updated.
   password_has_been_changed: Password has been changed.
   email_integration: Email Integration
   send_via_connected_email: Send via connected email
@@ -386,7 +389,7 @@ en: &en
   from: From
   account_sid: Account SID
   send_sms_via_webhook: Send SMS via webhook
-  webhook_integration_allows_to_send_sms_using_any_provider: Webhook integration allows to send SMS using any provider
+  webhook_integration_allows_to_send_sms_using_any_provider: Webhook integration allows you to send SMS using any provider
   test: Test
   single_sign_on_with_saml_2_0: Single Sign On with SAML 2.0
   force_sso_disable_login_with_email_and_password: Force SSO (disable login with email and password)
@@ -418,7 +421,7 @@ en: &en
   send_signature_request_emails_without_limits_with_docuseal_pro: Send signature request emails without limits with DocuSeal Pro
   count_emails_used: '%{count} emails used'
   has_been_connected: has been connected
-  sms_not_configured: SMS not Configure
+  sms_not_configured: SMS not Configured
   configure_sms_settings_in_order_to_send_text_messages_: 'Configure SMS settings in order to send text messages:'
   go_to_sms_settings: Go to SMS settings
   back_to_active: Back to Active
@@ -498,6 +501,7 @@ en: &en
   submission_requester: Submission requester
   specified_email: Specified email
   invite_by_name: 'Invite by %{name}'
+  invite_via_form_field: Invite via Form Field
   same_as_name: 'Same as %{name}'
   default_email: Default Email
   processing: Processing
@@ -594,7 +598,7 @@ en: &en
   upload_file: Upload file
   upgrade_your_plan_to_invite_more_users_contact_email: 'Upgrade your plan to invite more users (contact %{email}).'
   contact_your_admin_email_to_invite_more_users: 'Contact your admin %{email} to invite more users.'
-  contact_your_administrator_to_add_new_users: Contact your administrator to add new user
+  contact_your_administrator_to_add_new_users: Contact your administrator to add new users
   one_hour: 1 hour
   two_hours: 2 hours
   four_hours: 4 hours
@@ -623,7 +627,7 @@ en: &en
   personalize_email_content: Personalize email content
   automated_reminders: Automated reminders
   bulk_send_from_spreadsheet: Bulk send from spreadsheet
-  identify_verification_via_sms: Identify verification via SMS
+  identify_verification_via_sms: Identity verification via SMS
   start_with_pro: Start with Pro
   user_month: user / month
   developer_sandbox: Developer Sandbox.
@@ -735,7 +739,7 @@ en: &en
   find_suitable_zapier_templates_to_automate_your_workflow: Find suitable Zapier templates to automate your workflow.
   get_started: Get started
   click_here_to_learn_more_about_user_roles_and_permissions_html: '<a href="https://www.docuseal.com/resources/manage-users-and-roles" class="link" rel="noopener noreferrer nofollow" target="_blank">Click here</a> to learn more about user roles and permissions.'
-  count_10_signature_request_emails_sent_this_month_upgrade_to_pro_to_send_unlimited_signature_request_email: '%{count} / 10 signature request emails sent this month. Upgrade to Pro to send unlimited signature request email.'
+  count_10_signature_request_emails_sent_this_month_upgrade_to_pro_to_send_unlimited_signature_request_email: '%{count} / 10 signature request emails sent this month. Upgrade to Pro to send unlimited signature request emails.'
   test_mode_emails_limit_will_be_reset_within_24_hours: Test mode emails limit will be reset within 24 hours.
   on_a_scale_of_1_to_10_how_satisfied_are_you_with_the_docuseal_product_: On a scale of 1 to 10, how satisfied are you with the DocuSeal product?
   tell_us_more_about_your_experience: Tell us more about your experience
@@ -753,7 +757,7 @@ en: &en
   manage_plan: Manage plan
   this_submission_has_multiple_signers_which_prevents_the_use_of_a_sharing_link_html: This submission has multiple signers, which prevents the use of a sharing link as it's unclear which signer is responsible for specific fields. To resolve this, follow this <a href="https://www.docuseal.com/resources/pre-filling-recipients" class="link font-bold" rel="noopener noreferrer nofollow" target="_blank">guide</a> to define the default signer details.
   welcome_to_docuseal: Welcome to DocuSeal
-  start_a_quick_tour_to_learn_how_to_create_an_send_your_first_document: Start a quick tour to learn how to create an send your first document
+  start_a_quick_tour_to_learn_how_to_create_an_send_your_first_document: Start a quick tour to learn how to create and send your first document
   start_tour: Start Tour
   name_a_z: Name A-Z
   recently_used: Recently used
@@ -813,7 +817,7 @@ en: &en
   connect_gmail_or_outlook: Connect Gmail or Outlook
   connect_your_email_to_bulk_send: Connect your email to bulk send
   connect_your_email_or_outlook_account_or_add_smtp_settings_to_bulk_send: Connect your Gmail or Outlook account or add SMTP settings to bulk send.
-  are_you_sure_you_want_to_add_recipients_without_sending_to_send_emails_it_requires_to_connect_gmail_or_outlook: Are you sure you want to add recipients without sending? To send emails it requires to connect Gmail or Outlook.
+  are_you_sure_you_want_to_add_recipients_without_sending_to_send_emails_it_requires_to_connect_gmail_or_outlook: Are you sure you want to add recipients without sending? To send emails you need to connect Gmail or Outlook.
   template_name_has_been_completed_by_submitters_html: '"<strong>{template.name}</strong>" has been completed by <strong>{submission.submitters}</strong>'
   please_check_the_copy_of_your_template_name_in_the_email_attachments_html: 'Please check the copy of your "<strong>{template.name}</strong>" in the email attachments.'
   you_have_been_invited_to_sign_the_template_name_html: 'You have been invited to sign the "<strong>{template.name}</strong>".'
@@ -879,11 +883,40 @@ en: &en
   email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm: "%{email} email address is awaiting confirmation. Follow the link in the email to confirm."
   please_confirm_your_email_address_using_the_link_below_: 'Please confirm your email address using the link below:'
   confirm_email: Confirm email
+  please_verify_your_email_address_to_continue: Please verify your email address to continue.
+  verification_code_sent_click_link_or_enter_code: A verification code has been sent to your email. Click the email link or enter the one time code to confirm your email.
+  use_otp_code_to_verify_email_or_click_link_below_html: 'Use <b>%{code}</b> code to verify your email or click the link below:'
+  verify_your_email: Verify your email
+  your_email_has_been_confirmed: Your email has been confirmed.
+  invalid_or_expired_verification_code: Invalid or expired verification code.
+  didnt_receive_an_email: Did not receive an email?
   unconfirmed: Unconfirmed
   you_requested_to_reset_your_password_use_the_link_below_to_continue: You requested to reset your password. Use the link below to continue
   if_you_didnt_request_this_you_can_ignore_this_email: "If you didn't request this, please ignore this email."
   your_password_wont_change_until_you_open_the_link_above_and_set_a_new_one: "Your password won't change until you open the link above and set a new one."
   too_many_requests_try_again_later: Too many requests, try again later.
+  bold: Bold
+  italic: Italic
+  underline: Underline
+  undo: Undo
+  redo: Redo
+  add_variable: Add variable
+  enter_a_url_or_variable_name: Enter a URL or variable name
+  new_token: New token
+  token: Token
+  mcp_server: MCP Server
+  instructions: Instructions
+  please_copy_the_token_below_now_as_it_wont_be_shown_again: Please copy the token below now, as it won't be shown again
+  mcp_token_has_been_created: MCP token has been created.
+  mcp_token_has_been_removed: MCP token has been removed.
+  enable_mcp_server: Enable MCP server
+  all_existing_mcp_connections_will_be_stopped_immediately_when_this_setting_is_disabled: All existing MCP connections will be stopped immediately when this setting is disabled.
+  connect_to_docuseal_mcp: Connect to DocuSeal MCP
+  add_the_following_to_your_mcp_client_configuration: Add the following to your MCP client configuration
+  works_with_claude_desktop_cursor_windsurf_vs_code_and_any_mcp_compatible_client: Works with Claude Desktop, Cursor, Windsurf, VS Code, and any MCP-compatible client.
+  your_email_address_has_been_changed: Your email address has been changed
+  the_email_address_for_your_account_has_been_changed_to_new_email: The email address for your account has been changed to %{new_email}.
+  if_you_did_not_make_this_change_please_contact_us_by_replying_to_this_email: If you did not make this change, please contact us by replying to this email.
   devise:
     confirmations:
       confirmed: Your email address has been successfully confirmed.
@@ -981,6 +1014,8 @@ en: &en
     scopes:
       write: Update your data
       read: Read your data
+      mcp: Use MCP
+      claudeai: Use Claude AI
   pagination:
     submissions:
       range_with_total: "%{from}-%{to} of %{count} submissions"
@@ -1000,6 +1035,16 @@ en: &en
     events:
       range_with_total: "%{from}-%{to} of %{count} events"
       range_without_total: "%{from}-%{to} events"
+  variables:
+    account_name: Account name
+    submitter_link: Submitter link
+    template_name: Template name
+    submission_submitters: Submitters list
+    submission_link: Submission link
+    documents_link: Documents link
+  time:
+    formats:
+      detailed: "%B %d, %Y %H:%M:%S"
 
 es: &es
   knowledge_based_authentication: Autenticación basada en el conocimiento
@@ -1020,7 +1065,7 @@ es: &es
   party: Parte
   edit_order: Edita Pedido
   select: Seleccionar
-  invite_form_fields: Invitar campos del formulario
+  sender_form_fields: Campos del formulario del remitente
   pro: Pro
   default_parties: Partes predeterminadas
   authenticate_embedded_form_preview_with_token: Autenticar vista previa del formulario incrustado con token
@@ -1029,6 +1074,9 @@ es: &es
   stripe_account_has_been_connected: La cuenta de Stripe ha sido conectada.
   re_connect_stripe: Volver a conectar Stripe
   private: Privado
+  _variables: Variables
+  make_all_newly_created_templates_private_to_their_creator_and_admins_by_default: Hacer que todas las plantillas recién creadas sean privadas para su creador y los administradores por defecto.
+  create_templates_with_admin_access_by_default: Crear plantillas con acceso de administrador por defecto
   require_email_2fa: Requerir 2FA por correo electrónico
   when_checked_each_signer_must_verify_their_email_with_a_one_time_code_before_accessing_the_document: Cuando está marcado, cada firmante debe verificar su correo electrónico con un código de un solo uso antes de acceder al documento.
   require_phone_2fa: Requerir 2FA por teléfono
@@ -1483,6 +1531,7 @@ es: &es
   submission_requester: Solicitante del envío
   specified_email: Correo electrónico especificado
   invite_by_name: 'Invitar por %{name}'
+  invite_via_form_field: Invitar a través de campo del formulario
   same_as_name: 'Igual que %{name}'
   default_email: Correo electrónico predeterminado
   processing: Procesando
@@ -1861,11 +1910,40 @@ es: &es
   email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm: "%{email} está pendiente de confirmación. Sigue el enlace en el correo para confirmarla."
   please_confirm_your_email_address_using_the_link_below_: 'Por favor, confirma tu dirección de correo electrónico utilizando el enlace a continuación:'
   confirm_email: Confirmar correo
+  please_verify_your_email_address_to_continue: Por favor, verifica tu dirección de correo electrónico para continuar.
+  verification_code_sent_click_link_or_enter_code: Se ha enviado un código de verificación a tu correo. Puedes hacer clic en el enlace del correo o ingresar el código a continuación.
+  use_otp_code_to_verify_email_or_click_link_below_html: 'Usa el código <b>%{code}</b> para verificar tu correo electrónico o haz clic en el enlace a continuación:'
+  verify_your_email: Verificar tu correo electrónico
+  your_email_has_been_confirmed: Tu correo electrónico ha sido confirmado.
+  invalid_or_expired_verification_code: Código de verificación inválido o expirado.
+  didnt_receive_an_email: "¿No recibiste un correo electrónico?"
   unconfirmed: No confirmado
   you_requested_to_reset_your_password_use_the_link_below_to_continue: Solicitaste restablecer tu contraseña. Usa el enlace a continuación para continuar.
   if_you_didnt_request_this_you_can_ignore_this_email: "Si no solicitaste esto, puedes ignorar este correo electrónico."
   your_password_wont_change_until_you_open_the_link_above_and_set_a_new_one: "Tu contraseña no cambiará hasta que abras el enlace anterior y establezcas una nueva."
   too_many_requests_try_again_later: Demasiadas solicitudes. Intenta de nuevo más tarde.
+  bold: Negrita
+  italic: Cursiva
+  underline: Subrayado
+  undo: Deshacer
+  redo: Rehacer
+  add_variable: Agregar variable
+  enter_a_url_or_variable_name: Ingrese una URL o nombre de variable
+  new_token: Nuevo token
+  token: Token
+  mcp_server: Servidor MCP
+  instructions: Instrucciones
+  please_copy_the_token_below_now_as_it_wont_be_shown_again: Copie el token a continuación ahora, ya que no se mostrará de nuevo
+  mcp_token_has_been_created: El token MCP ha sido creado.
+  mcp_token_has_been_removed: El token MCP ha sido eliminado.
+  enable_mcp_server: Habilitar servidor MCP
+  all_existing_mcp_connections_will_be_stopped_immediately_when_this_setting_is_disabled: Todas las conexiones MCP existentes se detendrán inmediatamente cuando se desactive esta configuración.
+  connect_to_docuseal_mcp: Conectar a DocuSeal MCP
+  add_the_following_to_your_mcp_client_configuration: Agregue lo siguiente a la configuración de su cliente MCP
+  works_with_claude_desktop_cursor_windsurf_vs_code_and_any_mcp_compatible_client: Funciona con Claude Desktop, Cursor, Windsurf, VS Code y cualquier cliente compatible con MCP.
+  your_email_address_has_been_changed: Tu dirección de correo electrónico ha sido cambiada
+  the_email_address_for_your_account_has_been_changed_to_new_email: La dirección de correo electrónico de tu cuenta ha sido cambiada a %{new_email}.
+  if_you_did_not_make_this_change_please_contact_us_by_replying_to_this_email: Si no realizaste este cambio, contáctanos respondiendo a este correo electrónico.
   devise:
     confirmations:
       confirmed: Tu dirección de correo electrónico ha sido confirmada correctamente.
@@ -1963,6 +2041,8 @@ es: &es
     scopes:
       write: Actualizar tus datos
       read: Leer tus datos
+      mcp: Usar MCP
+      claudeai: Usar Claude AI
   pagination:
     submissions:
       range_with_total: "%{from}-%{to} de %{count} envíos"
@@ -1982,6 +2062,16 @@ es: &es
     events:
       range_with_total: "%{from}-%{to} de %{count} eventos"
       range_without_total: "%{from}-%{to} eventos"
+  variables:
+    account_name: Nombre de la cuenta
+    submitter_link: Enlace del firmante
+    template_name: Nombre de la plantilla
+    submission_submitters: Lista de firmantes
+    submission_link: Enlace del envío
+    documents_link: Enlace de los documentos
+  time:
+    formats:
+      detailed: "%-d de %B de %Y %H:%M:%S"
 
 it: &it
   knowledge_based_authentication: Autenticazione basata sulla conoscenza
@@ -2002,7 +2092,7 @@ it: &it
   party: Parte
   edit_order: Modifica Ordine
   select: Seleziona
-  invite_form_fields: Invita campi modulo
+  sender_form_fields: Campi del modulo del mittente
   pro: Pro
   default_parties: Parti predefiniti
   authenticate_embedded_form_preview_with_token: "Autentica l'anteprima del modulo incorporato con il token"
@@ -2011,6 +2101,9 @@ it: &it
   stripe_account_has_been_connected: L'account Stripe è stato collegato.
   re_connect_stripe: Ricollega Stripe
   private: Privato
+  _variables: Variabili
+  make_all_newly_created_templates_private_to_their_creator_and_admins_by_default: Rendere tutte le nuove template private per il creatore e gli amministratori per impostazione predefinita.
+  create_templates_with_admin_access_by_default: Crea modelli con accesso amministratore per impostazione predefinita
   require_email_2fa: Richiedi 2FA email
   when_checked_each_signer_must_verify_their_email_with_a_one_time_code_before_accessing_the_document: Quando selezionato, ogni firmatario deve verificare la propria email con un codice monouso prima di accedere al documento.
   require_phone_2fa: Richiedi 2FA telefono
@@ -2465,6 +2558,7 @@ it: &it
   submission_requester: "Richiedente dell'invio"
   specified_email: Email specificata
   invite_by_name: 'Invito da %{name}'
+  invite_via_form_field: Invito tramite campo del modulo
   same_as_name: 'Uguale a %{name}'
   default_email: Email predefinita
   processing: Elaborazione in corso
@@ -2844,11 +2938,40 @@ it: &it
   email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm: "%{email} è in attesa di conferma. Segui il link nell'email per confermare."
   please_confirm_your_email_address_using_the_link_below_: 'Conferma il tuo indirizzo email utilizzando il link qui sotto:'
   confirm_email: Conferma email
+  please_verify_your_email_address_to_continue: Verifica il tuo indirizzo email per continuare.
+  verification_code_sent_click_link_or_enter_code: "È stato inviato un codice di verifica alla tua email. Puoi cliccare il link nell'email o inserire il codice qui sotto."
+  use_otp_code_to_verify_email_or_click_link_below_html: 'Usa il codice <b>%{code}</b> per verificare la tua email o clicca il link qui sotto:'
+  verify_your_email: Verifica la tua email
+  your_email_has_been_confirmed: La tua email è stata confermata.
+  invalid_or_expired_verification_code: Codice di verifica non valido o scaduto.
+  didnt_receive_an_email: Non hai ricevuto un'email?
   unconfirmed: Non confermato
   you_requested_to_reset_your_password_use_the_link_below_to_continue: Hai richiesto di reimpostare la tua password. Usa il link qui sotto per continuare.
   if_you_didnt_request_this_you_can_ignore_this_email: "Se non hai richiesto questo, puoi ignorare questa email."
   your_password_wont_change_until_you_open_the_link_above_and_set_a_new_one: "La tua password non cambierà finché non apri il link sopra e ne imposti una nuova."
   too_many_requests_try_again_later: Troppe richieste. Riprova più tardi.
+  bold: Grassetto
+  italic: Corsivo
+  underline: Sottolineato
+  undo: Annulla
+  redo: Ripeti
+  add_variable: Aggiungi variabile
+  enter_a_url_or_variable_name: Inserisci un URL o nome variabile
+  new_token: Nuovo token
+  token: Token
+  mcp_server: Server MCP
+  instructions: Istruzioni
+  please_copy_the_token_below_now_as_it_wont_be_shown_again: Copia il token qui sotto ora, poiché non verrà mostrato di nuovo
+  mcp_token_has_been_created: Il token MCP è stato creato.
+  mcp_token_has_been_removed: Il token MCP è stato rimosso.
+  enable_mcp_server: Abilita server MCP
+  all_existing_mcp_connections_will_be_stopped_immediately_when_this_setting_is_disabled: Tutte le connessioni MCP esistenti verranno interrotte immediatamente quando questa impostazione viene disattivata.
+  connect_to_docuseal_mcp: Connetti a DocuSeal MCP
+  add_the_following_to_your_mcp_client_configuration: Aggiungi quanto segue alla configurazione del tuo client MCP
+  works_with_claude_desktop_cursor_windsurf_vs_code_and_any_mcp_compatible_client: Funziona con Claude Desktop, Cursor, Windsurf, VS Code e qualsiasi client compatibile con MCP.
+  your_email_address_has_been_changed: Il tuo indirizzo email è stato modificato
+  the_email_address_for_your_account_has_been_changed_to_new_email: L'indirizzo email del tuo account è stato modificato in %{new_email}.
+  if_you_did_not_make_this_change_please_contact_us_by_replying_to_this_email: Se non hai effettuato questa modifica, contattaci rispondendo a questa email.
   devise:
     confirmations:
       confirmed: Il tuo indirizzo email è stato confermato con successo.
@@ -2946,6 +3069,8 @@ it: &it
     scopes:
       write: Aggiorna i tuoi dati
       read: Leggi i tuoi dati
+      mcp: Usa MCP
+      claudeai: Usa Claude AI
   pagination:
     submissions:
       range_with_total: "%{from}-%{to} di %{count} invii"
@@ -2965,6 +3090,16 @@ it: &it
     events:
       range_with_total: "%{from}-%{to} di %{count} eventi"
       range_without_total: "%{from}-%{to} eventi"
+  variables:
+    account_name: Nome dell'account
+    submitter_link: Link del firmatario
+    template_name: Nome del modello
+    submission_submitters: Lista dei firmatari
+    submission_link: Link dell'invio
+    documents_link: Link dei documenti
+  time:
+    formats:
+      detailed: "%d %B %Y %H:%M:%S"
 
 fr: &fr
   knowledge_based_authentication: Authentification basée sur la connaissance
@@ -2985,7 +3120,7 @@ fr: &fr
   party: Partie
   edit_order: Modifier l’ordre
   select: Sélectionner
-  invite_form_fields: Champs du formulaire d’invitation
+  sender_form_fields: Champs du formulaire de l’expéditeur
   pro: Pro
   default_parties: Parties par défaut
   authenticate_embedded_form_preview_with_token: Authentifier l’aperçu du formulaire intégré avec un jeton
@@ -2994,6 +3129,9 @@ fr: &fr
   stripe_account_has_been_connected: Le compte Stripe a été connecté.
   re_connect_stripe: Reconnecter Stripe
   private: Privé
+  _variables: Variables
+  make_all_newly_created_templates_private_to_their_creator_and_admins_by_default: Rendre tous les nouveaux modèles privés pour leur créateur et les administrateurs par défaut.
+  create_templates_with_admin_access_by_default: Créer des modèles avec un accès administrateur par défaut
   require_email_2fa: Exiger la 2FA par email
   when_checked_each_signer_must_verify_their_email_with_a_one_time_code_before_accessing_the_document: Lorsque coché, chaque signataire doit vérifier son email avec un code à usage unique avant d'accéder au document.
   require_phone_2fa: Exiger la 2FA par téléphone
@@ -3448,6 +3586,7 @@ fr: &fr
   submission_requester: Demandeur de soumission
   specified_email: E‑mail spécifié
   invite_by_name: Inviter par %{name}
+  invite_via_form_field: Inviter via champ du formulaire
   same_as_name: Identique à %{name}
   default_email: E‑mail par défaut
   processing: Traitement en cours
@@ -3823,11 +3962,40 @@ fr: &fr
   email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm: "%{email} est en attente de confirmation. Suivez le lien dans l'e-mail pour la confirmer."
   please_confirm_your_email_address_using_the_link_below_: 'Veuillez confirmer votre adresse e-mail en utilisant le lien ci-dessous :'
   confirm_email: "Confirmer l'e-mail"
+  please_verify_your_email_address_to_continue: "Veuillez vérifier votre adresse e-mail pour continuer."
+  verification_code_sent_click_link_or_enter_code: "Un code de vérification a été envoyé à votre adresse e-mail. Vous pouvez cliquer sur le lien dans l'e-mail ou saisir le code ci-dessous."
+  use_otp_code_to_verify_email_or_click_link_below_html: "Utilisez le code <b>%{code}</b> pour vérifier votre e-mail ou cliquez sur le lien ci-dessous :"
+  verify_your_email: "Vérifier votre e-mail"
+  your_email_has_been_confirmed: "Votre adresse e-mail a été confirmée."
+  invalid_or_expired_verification_code: "Code de vérification invalide ou expiré."
+  didnt_receive_an_email: "Vous n'avez pas reçu d'e-mail ?"
   unconfirmed: Non confirmé
   you_requested_to_reset_your_password_use_the_link_below_to_continue: Vous avez demandé à réinitialiser votre mot de passe. Utilisez le lien ci-dessous pour continuer.
   if_you_didnt_request_this_you_can_ignore_this_email: "Si vous n'avez pas fait cette demande, veuillez ignorer cet e-mail."
   your_password_wont_change_until_you_open_the_link_above_and_set_a_new_one: "Votre mot de passe ne changera pas tant que vous n’aurez pas ouvert le lien ci-dessus et défini un nouveau mot de passe."
   too_many_requests_try_again_later: Trop de demandes. Réessayez plus tard.
+  bold: Gras
+  italic: Italique
+  underline: Souligné
+  undo: Annuler
+  redo: Rétablir
+  add_variable: Ajouter une variable
+  enter_a_url_or_variable_name: Entrez une URL ou un nom de variable
+  new_token: Nouveau jeton
+  token: Jeton
+  mcp_server: Serveur MCP
+  instructions: Instructions
+  please_copy_the_token_below_now_as_it_wont_be_shown_again: Copiez le jeton ci-dessous maintenant, car il ne sera plus affiché
+  mcp_token_has_been_created: Le jeton MCP a été créé.
+  mcp_token_has_been_removed: Le jeton MCP a été supprimé.
+  enable_mcp_server: Activer le serveur MCP
+  all_existing_mcp_connections_will_be_stopped_immediately_when_this_setting_is_disabled: Toutes les connexions MCP existantes seront arrêtées immédiatement lorsque ce paramètre est désactivé.
+  connect_to_docuseal_mcp: Se connecter à DocuSeal MCP
+  add_the_following_to_your_mcp_client_configuration: Ajoutez ce qui suit à la configuration de votre client MCP
+  works_with_claude_desktop_cursor_windsurf_vs_code_and_any_mcp_compatible_client: Fonctionne avec Claude Desktop, Cursor, Windsurf, VS Code et tout client compatible MCP.
+  your_email_address_has_been_changed: Votre adresse e-mail a été modifiée
+  the_email_address_for_your_account_has_been_changed_to_new_email: "L'adresse e-mail de votre compte a été modifiée en %{new_email}."
+  if_you_did_not_make_this_change_please_contact_us_by_replying_to_this_email: Si vous n'avez pas effectué ce changement, veuillez nous contacter en répondant à cet e-mail.
   devise:
     confirmations:
       confirmed: Votre adresse e-mail a été confirmée avec succès.
@@ -3925,6 +4093,8 @@ fr: &fr
     scopes:
       write: Mettre à jour vos données
       read: Lire vos données
+      mcp: Utiliser MCP
+      claudeai: Utiliser Claude AI
   pagination:
     submissions:
       range_with_total: "%{from}-%{to} sur %{count} soumissions"
@@ -3944,6 +4114,16 @@ fr: &fr
     events:
       range_with_total: "%{from}-%{to} sur %{count} événements"
       range_without_total: "%{from}-%{to} événements"
+  variables:
+    account_name: Nom du compte
+    submitter_link: Lien du signataire
+    template_name: Nom du modèle
+    submission_submitters: Liste des signataires
+    submission_link: Lien de la soumission
+    documents_link: Lien des documents
+  time:
+    formats:
+      detailed: "%A %d %B %Y %Hh%Mm%Ss"
 
 pt: &pt
   knowledge_based_authentication: Autenticação baseada em conhecimento
@@ -3964,7 +4144,7 @@ pt: &pt
   party: Parte
   edit_order: Edita Pedido
   select: Selecionar
-  invite_form_fields: Convidar campos do formulário
+  sender_form_fields: Campos do formulário do remetente
   pro: Pro
   default_parties: Partes padrão
   authenticate_embedded_form_preview_with_token: Autenticar visualização incorporada do formulário com token
@@ -3973,6 +4153,9 @@ pt: &pt
   stripe_account_has_been_connected: Conta Stripe foi conectada.
   re_connect_stripe: Reconectar Stripe
   private: Privado
+  _variables: Variáveis
+  make_all_newly_created_templates_private_to_their_creator_and_admins_by_default: Tornar todos os modelos recém-criados privados para seu criador e administradores por padrão.
+  create_templates_with_admin_access_by_default: Criar modelos com acesso de administrador por padrão
   require_email_2fa: Exigir 2FA por email
   when_checked_each_signer_must_verify_their_email_with_a_one_time_code_before_accessing_the_document: Quando marcado, cada signatário deve verificar seu email com um código de uso único antes de acessar o documento.
   require_phone_2fa: Exigir 2FA por telefone
@@ -4427,6 +4610,7 @@ pt: &pt
   submission_requester: Solicitante de submissão
   specified_email: E-mail especificado
   invite_by_name: 'Convidado por %{name}'
+  invite_via_form_field: Convidar via campo do formulário
   same_as_name: 'Igual a %{name}'
   default_email: E-mail padrão
   processing: Processando
@@ -4805,11 +4989,40 @@ pt: &pt
   email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm: "%{email} está aguardando confirmação. Siga o link enviado para esse endereço de e-mail para confirmar."
   please_confirm_your_email_address_using_the_link_below_: 'Por favor, confirme seu endereço de e-mail usando o link abaixo:'
   confirm_email: Confirmar e-mail
+  please_verify_your_email_address_to_continue: Verifique seu endereço de e-mail para continuar.
+  verification_code_sent_click_link_or_enter_code: Um código de verificação foi enviado para seu e-mail. Você pode clicar no link do e-mail ou inserir o código abaixo.
+  use_otp_code_to_verify_email_or_click_link_below_html: 'Use o código <b>%{code}</b> para verificar seu e-mail ou clique no link abaixo:'
+  verify_your_email: Verificar seu e-mail
+  your_email_has_been_confirmed: Seu e-mail foi confirmado.
+  invalid_or_expired_verification_code: Código de verificação inválido ou expirado.
+  didnt_receive_an_email: Não recebeu um e-mail?
   unconfirmed: Não confirmado
   you_requested_to_reset_your_password_use_the_link_below_to_continue: Você solicitou a redefinição da sua senha. Use o link abaixo para continuar.
   if_you_didnt_request_this_you_can_ignore_this_email: "Se você não solicitou isso, pode ignorar este e-mail."
   your_password_wont_change_until_you_open_the_link_above_and_set_a_new_one: "Sua senha não será alterada até que você abra o link acima e defina uma nova."
   too_many_requests_try_again_later: Muitas solicitações. Tente novamente mais tarde.
+  bold: Negrito
+  italic: Itálico
+  underline: Sublinhado
+  undo: Desfazer
+  redo: Refazer
+  add_variable: Adicionar variável
+  enter_a_url_or_variable_name: Digite uma URL ou nome de variável
+  new_token: Novo token
+  token: Token
+  mcp_server: Servidor MCP
+  instructions: Instruções
+  please_copy_the_token_below_now_as_it_wont_be_shown_again: Copie o token abaixo agora, pois ele não será exibido novamente
+  mcp_token_has_been_created: O token MCP foi criado.
+  mcp_token_has_been_removed: O token MCP foi removido.
+  enable_mcp_server: Ativar servidor MCP
+  all_existing_mcp_connections_will_be_stopped_immediately_when_this_setting_is_disabled: Todas as conexões MCP existentes serão interrompidas imediatamente quando esta configuração for desativada.
+  connect_to_docuseal_mcp: Conectar ao DocuSeal MCP
+  add_the_following_to_your_mcp_client_configuration: Adicione o seguinte à configuração do seu cliente MCP
+  works_with_claude_desktop_cursor_windsurf_vs_code_and_any_mcp_compatible_client: Funciona com Claude Desktop, Cursor, Windsurf, VS Code e qualquer cliente compatível com MCP.
+  your_email_address_has_been_changed: Seu endereço de e-mail foi alterado
+  the_email_address_for_your_account_has_been_changed_to_new_email: O endereço de e-mail da sua conta foi alterado para %{new_email}.
+  if_you_did_not_make_this_change_please_contact_us_by_replying_to_this_email: Se você não fez essa alteração, entre em contato conosco respondendo a este e-mail.
   devise:
     confirmations:
       confirmed: Seu endereço de e-mail foi confirmado com sucesso.
@@ -4907,6 +5120,8 @@ pt: &pt
     scopes:
       write: Atualizar seus dados
       read: Ler seus dados
+      mcp: Usar MCP
+      claudeai: Usar Claude AI
   pagination:
     submissions:
       range_with_total: "%{from}-%{to} de %{count} submissões"
@@ -4926,6 +5141,16 @@ pt: &pt
     events:
       range_with_total: "%{from}-%{to} de %{count} eventos"
       range_without_total: "%{from}-%{to} eventos"
+  variables:
+    account_name: Nome da conta
+    submitter_link: Link do signatário
+    template_name: Nome do modelo
+    submission_submitters: Lista de signatários
+    submission_link: Link da submissão
+    documents_link: Link dos documentos
+  time:
+    formats:
+      detailed: "%A, %d de %B de %Y, %H:%M:%Sh"
 
 de: &de
   knowledge_based_authentication: Wissensbasierte Authentifizierung
@@ -4941,6 +5166,9 @@ de: &de
   pro: Pro
   thanks: Danke
   private: Privat
+  _variables: Variablen
+  make_all_newly_created_templates_private_to_their_creator_and_admins_by_default: Alle neu erstellten Vorlagen standardmäßig nur für ihren Ersteller und Administratoren sichtbar machen.
+  create_templates_with_admin_access_by_default: Vorlagen standardmäßig mit Administratorzugriff erstellen
   require_email_2fa: E-Mail 2FA erforderlich
   when_checked_each_signer_must_verify_their_email_with_a_one_time_code_before_accessing_the_document: Wenn aktiviert, muss jeder Unterzeichner seine E-Mail mit einem einmaligen Code verifizieren, bevor er auf das Dokument zugreifen kann.
   require_phone_2fa: Telefon 2FA erforderlich
@@ -4953,7 +5181,7 @@ de: &de
   click_here_to_send_a_reset_password_email_html: '<label class="link" for="resend_password_button">Klicken Sie hier</label>, um eine E-Mail zum Zurücksetzen des Passworts zu senden.'
   edit_order: Bestellung bearbeiten
   expirable_file_download_links: Ablaufbare Datei-Download-Links
-  invite_form_fields: Einladungsformular-Felder
+  sender_form_fields: Absenderformular-Felder
   default_parties: Standardparteien
   authenticate_embedded_form_preview_with_token: Eingebettete Formularvorschau mit Token authentifizieren
   stripe_integration: Stripe-Integration
@@ -5409,6 +5637,7 @@ de: &de
   submission_requester: Anfragende Person
   specified_email: Angegebene E-Mail
   invite_by_name: 'Einladung von %{name}'
+  invite_via_form_field: Einladung über Formularfeld
   same_as_name: 'Gleich wie %{name}'
   default_email: Standard-E-Mail
   processing: Verarbeitung
@@ -5787,11 +6016,40 @@ de: &de
   email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm: "%{email} wartet auf Bestätigung. Folgen Sie dem Link in der E-Mail, um sie zu bestätigen."
   please_confirm_your_email_address_using_the_link_below_: 'Bitte bestätigen Sie Ihre E-Mail-Adresse über den folgenden Link:'
   confirm_email: E-Mail bestätigen
+  please_verify_your_email_address_to_continue: Bitte bestätigen Sie Ihre E-Mail-Adresse, um fortzufahren.
+  verification_code_sent_click_link_or_enter_code: Ein Verifizierungscode wurde an Ihre E-Mail gesendet. Sie können auf den Link in der E-Mail klicken oder den Code unten eingeben.
+  use_otp_code_to_verify_email_or_click_link_below_html: 'Verwenden Sie den Code <b>%{code}</b>, um Ihre E-Mail zu bestätigen, oder klicken Sie auf den Link unten:'
+  verify_your_email: E-Mail bestätigen
+  your_email_has_been_confirmed: Ihre E-Mail-Adresse wurde bestätigt.
+  invalid_or_expired_verification_code: Ungültiger oder abgelaufener Verifizierungscode.
+  didnt_receive_an_email: Keine E-Mail erhalten?
   unconfirmed: Unbestätigt
   you_requested_to_reset_your_password_use_the_link_below_to_continue: Sie haben angefordert, Ihr Passwort zurückzusetzen. Verwenden Sie den untenstehenden Link, um fortzufahren.
   if_you_didnt_request_this_you_can_ignore_this_email: "Wenn Sie dies nicht angefordert haben, können Sie diese E-Mail ignorieren."
   your_password_wont_change_until_you_open_the_link_above_and_set_a_new_one: "Ihr Passwort wird erst geändert, wenn Sie den obigen Link öffnen und ein neues festlegen."
   too_many_requests_try_again_later: Zu viele Anfragen. Versuchen Sie es später erneut.
+  bold: Fett
+  italic: Kursiv
+  underline: Unterstrichen
+  undo: Rückgängig
+  redo: Wiederholen
+  add_variable: Variable hinzufügen
+  enter_a_url_or_variable_name: Geben Sie eine URL oder einen Variablennamen ein
+  new_token: Neues Token
+  token: Token
+  mcp_server: MCP-Server
+  instructions: Anweisungen
+  please_copy_the_token_below_now_as_it_wont_be_shown_again: Kopieren Sie das Token jetzt, da es nicht erneut angezeigt wird
+  mcp_token_has_been_created: Das MCP-Token wurde erstellt.
+  mcp_token_has_been_removed: Das MCP-Token wurde entfernt.
+  enable_mcp_server: MCP-Server aktivieren
+  all_existing_mcp_connections_will_be_stopped_immediately_when_this_setting_is_disabled: Alle bestehenden MCP-Verbindungen werden sofort gestoppt, wenn diese Einstellung deaktiviert wird.
+  connect_to_docuseal_mcp: Mit DocuSeal MCP verbinden
+  add_the_following_to_your_mcp_client_configuration: Fügen Sie Folgendes zu Ihrer MCP-Client-Konfiguration hinzu
+  works_with_claude_desktop_cursor_windsurf_vs_code_and_any_mcp_compatible_client: Funktioniert mit Claude Desktop, Cursor, Windsurf, VS Code und jedem MCP-kompatiblen Client.
+  your_email_address_has_been_changed: Ihre E-Mail-Adresse wurde geändert
+  the_email_address_for_your_account_has_been_changed_to_new_email: Die E-Mail-Adresse Ihres Kontos wurde in %{new_email} geändert.
+  if_you_did_not_make_this_change_please_contact_us_by_replying_to_this_email: Wenn Sie diese Änderung nicht vorgenommen haben, kontaktieren Sie uns bitte, indem Sie auf diese E-Mail antworten.
   devise:
     confirmations:
       confirmed: Ihre E-Mail-Adresse wurde erfolgreich bestätigt.
@@ -5889,6 +6147,8 @@ de: &de
     scopes:
       write: Aktualisieren Sie Ihre Daten
       read: Lesen Sie Ihre Daten
+      mcp: MCP verwenden
+      claudeai: Claude AI verwenden
   pagination:
     submissions:
       range_with_total: "%{from}-%{to} von %{count} Einreichungen"
@@ -5908,6 +6168,16 @@ de: &de
     events:
       range_with_total: "%{from}-%{to} von %{count} Ereignissen"
       range_without_total: "%{from}-%{to} Ereignisse"
+  variables:
+    account_name: Kontoname
+    submitter_link: Link des Unterzeichners
+    template_name: Vorlagenname
+    submission_submitters: Liste der Unterzeichner
+    submission_link: Link der Einreichung
+    documents_link: Link der Dokumente
+  time:
+    formats:
+      detailed: "%A, %d. %B %Y, %H:%M:%S Uhr"
 
 pl:
   require_phone_2fa_to_open: Wymagaj uwierzytelniania telefonicznego 2FA do otwarcia
@@ -6311,6 +6581,9 @@ nl: &nl
   pro: Pro
   thanks: Bedankt
   private: Privé
+  _variables: Variabelen
+  make_all_newly_created_templates_private_to_their_creator_and_admins_by_default: Maak alle nieuw aangemaakte sjablonen standaard privé voor hun maker en admins.
+  create_templates_with_admin_access_by_default: Sjablonen standaard met admin-toegang maken
   require_email_2fa: E-mail 2FA vereist
   when_checked_each_signer_must_verify_their_email_with_a_one_time_code_before_accessing_the_document: Wanneer aangevinkt, moet elke ondertekenaar zijn e-mail verifiëren met een eenmalige code voordat hij toegang krijgt tot het document.
   require_phone_2fa: Telefoon 2FA vereist
@@ -6323,7 +6596,7 @@ nl: &nl
   click_here_to_send_a_reset_password_email_html: <label class="link" for="resend_password_button">Klik hier</label> om een e-mail voor wachtwoordherstel te verzenden.
   edit_order: Volgorde bewerken
   expirable_file_download_links: Verlopende downloadlinks voor bestanden
-  invite_form_fields: Velden van uitnodigingsformulier
+  sender_form_fields: Velden van afzenderformulier
   default_parties: Standaard partijen
   authenticate_embedded_form_preview_with_token: Preview van ingesloten formulier authenticeren met token
   stripe_integration: Stripe-integratie
@@ -6780,6 +7053,7 @@ nl: &nl
   submission_requester: Aanvrager van inzending
   specified_email: Opgegeven e-mail
   invite_by_name: Uitnodigen door %{name}
+  invite_via_form_field: Uitnodigen via formulierveld
   same_as_name: Zelfde als %{name}
   default_email: Standaard e-mail
   processing: Verwerken
@@ -7154,11 +7428,40 @@ nl: &nl
   email_address_is_awaiting_confirmation_follow_the_link_in_the_email_to_confirm: "%{email} wacht op bevestiging. Volg de link in de e-mail om te bevestigen."
   please_confirm_your_email_address_using_the_link_below_: 'Bevestig je e-mailadres via de onderstaande link:'
   confirm_email: E-mailadres bevestigen
+  please_verify_your_email_address_to_continue: Bevestig je e-mailadres om door te gaan.
+  verification_code_sent_click_link_or_enter_code: Er is een verificatiecode naar je e-mail gestuurd. Je kunt op de link in de e-mail klikken of de code hieronder invoeren.
+  use_otp_code_to_verify_email_or_click_link_below_html: 'Gebruik code <b>%{code}</b> om je e-mail te verifiëren of klik op de link hieronder:'
+  verify_your_email: Je e-mail verifiëren
+  your_email_has_been_confirmed: Je e-mailadres is bevestigd.
+  invalid_or_expired_verification_code: Ongeldige of verlopen verificatiecode.
+  didnt_receive_an_email: Geen e-mail ontvangen?
   unconfirmed: Onbevestigd
   you_requested_to_reset_your_password_use_the_link_below_to_continue: Je hebt gevraagd je wachtwoord te resetten. Gebruik de onderstaande link om verder te gaan.
   if_you_didnt_request_this_you_can_ignore_this_email: "Als je dit niet hebt aangevraagd, kun je deze e-mail negeren."
   your_password_wont_change_until_you_open_the_link_above_and_set_a_new_one: "Je wachtwoord wordt niet gewijzigd totdat je de bovenstaande link opent en een nieuw wachtwoord instelt."
   too_many_requests_try_again_later: Te veel verzoeken. Probeer het later opnieuw.
+  bold: Vet
+  italic: Cursief
+  underline: Onderstreept
+  undo: Ongedaan maken
+  redo: Opnieuw
+  add_variable: Variabele toevoegen
+  enter_a_url_or_variable_name: Voer een URL of variabelenaam in
+  new_token: Nieuw token
+  token: Token
+  mcp_server: MCP-server
+  instructions: Instructies
+  please_copy_the_token_below_now_as_it_wont_be_shown_again: Kopieer het token hieronder nu, want het wordt niet opnieuw getoond
+  mcp_token_has_been_created: Het MCP-token is aangemaakt.
+  mcp_token_has_been_removed: Het MCP-token is verwijderd.
+  enable_mcp_server: MCP-server inschakelen
+  all_existing_mcp_connections_will_be_stopped_immediately_when_this_setting_is_disabled: Alle bestaande MCP-verbindingen worden onmiddellijk gestopt wanneer deze instelling wordt uitgeschakeld.
+  connect_to_docuseal_mcp: Verbinden met DocuSeal MCP
+  add_the_following_to_your_mcp_client_configuration: Voeg het volgende toe aan uw MCP-clientconfiguratie
+  works_with_claude_desktop_cursor_windsurf_vs_code_and_any_mcp_compatible_client: Werkt met Claude Desktop, Cursor, Windsurf, VS Code en elke MCP-compatibele client.
+  your_email_address_has_been_changed: Je e-mailadres is gewijzigd
+  the_email_address_for_your_account_has_been_changed_to_new_email: Het e-mailadres van je account is gewijzigd naar %{new_email}.
+  if_you_did_not_make_this_change_please_contact_us_by_replying_to_this_email: Als je deze wijziging niet hebt aangebracht, neem dan contact met ons op door op deze e-mail te antwoorden.
   devise:
     confirmations:
       confirmed: Je e-mailadres is succesvol bevestigd.
@@ -7256,6 +7559,8 @@ nl: &nl
     scopes:
       write: Uw gegevens bijwerken
       read: Uw gegevens lezen
+      mcp: MCP gebruiken
+      claudeai: Claude AI gebruiken
   pagination:
     submissions:
       range_with_total: "%{from}-%{to} van %{count} inzendingen"
@@ -7275,6 +7580,16 @@ nl: &nl
     events:
       range_with_total: "%{from}-%{to} van %{count} gebeurtenissen"
       range_without_total: "%{from}-%{to} gebeurtenissen"
+  variables:
+    account_name: Accountnaam
+    submitter_link: Link van de ondertekenaar
+    template_name: Sjabloonnaam
+    submission_submitters: Lijst van ondertekenaars
+    submission_link: Link van de inzending
+    documents_link: Link van de documenten
+  time:
+    formats:
+      detailed: "%d %B %Y %H:%M:%S"
 
 ar:
   require_phone_2fa_to_open: "تطلب فتح عبر تحقق الهاتف ذو العاملين"
@@ -7572,12 +7887,18 @@ en-US:
   date:
     formats:
       default: "%m/%d/%Y"
+  time:
+    formats:
+      detailed: "%B %d, %Y %I:%M:%S %p"
 
 en-GB:
   <<: *en
   date:
     formats:
       default: "%d/%m/%Y"
+  time:
+    formats:
+      detailed: "%d %B, %Y %H:%M:%S"
 
 es-ES:
   <<: *es

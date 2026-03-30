@@ -37,7 +37,7 @@ module Submissions
       bold_italic: FONT_BOLD_NAME
     }.freeze
 
-    SIGN_REASON = 'Signed by %<name>s with DocuSeal.com'
+    SIGN_REASON = 'Signed with DocuSeal.com'
 
     RTL_REGEXP = TextUtils::RTL_REGEXP
 
@@ -140,11 +140,13 @@ module Submissions
       configs = submitter.account.account_configs.where(key: [AccountConfig::FLATTEN_RESULT_PDF_KEY,
                                                               AccountConfig::WITH_SIGNATURE_ID,
                                                               AccountConfig::WITH_FILE_LINKS_KEY,
+                                                              AccountConfig::WITH_TIMESTAMP_SECONDS_KEY,
                                                               AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY,
                                                               AccountConfig::WITH_SIGNATURE_ID_REASON_KEY])
 
       with_signature_id = configs.find { |c| c.key == AccountConfig::WITH_SIGNATURE_ID }&.value == true
       is_flatten = configs.find { |c| c.key == AccountConfig::FLATTEN_RESULT_PDF_KEY }&.value != false
+      with_timestamp_seconds = configs.find { |c| c.key == AccountConfig::WITH_TIMESTAMP_SECONDS_KEY }&.value == true
       with_submitter_timezone = configs.find { |c| c.key == AccountConfig::WITH_SUBMITTER_TIMEZONE_KEY }&.value == true
       with_file_links = configs.find { |c| c.key == AccountConfig::WITH_FILE_LINKS_KEY }&.value == true
       with_signature_id_reason =
@@ -162,7 +164,7 @@ module Submissions
 
           pdf.trailer.info[:DocumentID] = document_id
           pdf.pages.each do |page|
-            font_size = (([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * 9).to_i
+            font_size = [(([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * 9).to_i, 4].max
             cnv = page.canvas(type: :overlay)
 
             text =
@@ -195,12 +197,16 @@ module Submissions
       fill_submitter_fields(submitter, submitter.account, pdfs_index, with_signature_id:, is_flatten:,
                                                                       with_submitter_timezone:,
                                                                       with_file_links:,
+                                                                      with_timestamp_seconds:,
                                                                       with_signature_id_reason:)
     end
 
     def fill_submitter_fields(submitter, account, pdfs_index, with_signature_id:, is_flatten:, with_headings: nil,
-                              with_submitter_timezone: false, with_signature_id_reason: true, with_file_links: nil)
-      cell_layouter = HexaPDF::Layout::TextLayouter.new(text_valign: :center, text_align: :center)
+                              with_submitter_timezone: false, with_signature_id_reason: true,
+                              with_timestamp_seconds: false, with_file_links: nil)
+      cell_layouters = Hash.new do |hash, valign|
+        hash[valign] = HexaPDF::Layout::TextLayouter.new(text_valign: valign.to_sym, text_align: :center)
+      end
 
       attachments_data_cache = {}
 
@@ -230,15 +236,16 @@ module Submissions
 
           page[:Annots] ||= []
           page[:Annots] = page[:Annots].try(:reject) do |e|
-            next if e.is_a?(Integer) || e.is_a?(Symbol)
+            next if e.is_a?(Integer) || e.is_a?(Symbol) || e.is_a?(HexaPDF::PDFArray)
 
-            e.present? && e[:A] && e[:A][:URI].to_s.starts_with?('file:///docuseal_field')
+            e.present? && e[:A] && !e[:A].is_a?(HexaPDF::PDFArray) &&
+              e[:A][:URI].to_s.starts_with?('file:///docuseal_field')
           end || page[:Annots]
 
           width = page.box.width
           height = page.box.height
 
-          preferences_font_size = field.dig('preferences', 'font_size').then { |num| num.present? ? num.to_i : nil }
+          preferences_font_size = field.dig('preferences', 'font_size').then { |num| num.presence&.to_i }
 
           font_size   = preferences_font_size
           font_size ||= (([page.box.width, page.box.height].min / A4_SIZE[0].to_f) * FONT_SIZE).to_i
@@ -318,13 +325,15 @@ module Submissions
                 timezone = submitter.account.timezone
                 timezone = submitter.timezone || submitter.account.timezone if with_submitter_timezone
 
+                time_format = with_timestamp_seconds ? :detailed : :long
+
                 if with_signature_id_reason || field.dig('preferences', 'reasons').present?
                   "#{"#{I18n.t('reason')}: " if reason_value}#{reason_value || I18n.t('digitally_signed_by')} " \
                     "#{submitter.name}#{" <#{submitter.email}>" if submitter.email.present?}\n" \
-                    "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: :long)} " \
+                    "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: time_format)} " \
                     "#{TimeUtils.timezone_abbr(timezone, attachment.created_at)}"
                 else
-                  "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: :long)} " \
+                  "#{I18n.l(attachment.created_at.in_time_zone(timezone), format: time_format)} " \
                     "#{TimeUtils.timezone_abbr(timezone, attachment.created_at)}"
                 end
               end
@@ -550,6 +559,8 @@ module Submissions
             )
           when ->(type) { type == 'cells' && !area['cell_w'].to_f.zero? }
             cell_width = area['cell_w'] * width
+            cell_valign = field.dig('preferences', 'valign').to_s.presence || 'center'
+            cell_layouter = cell_layouters[cell_valign]
 
             if (mask = field.dig('preferences', 'mask').presence)
               value = TextUtils.mask_value(value, mask)
@@ -565,7 +576,11 @@ module Submissions
                                                                 fill_color:,
                                                                 font_size:)
 
-              line_height = layouter.fit([text], cell_width, height).lines.first.height
+              line = layouter.fit([text], width, height).lines.first
+
+              line_height = line.height
+
+              cell_width = [line.width, cell_width].max
 
               if preferences_font_size.blank? && line_height > (area['h'] * height)
                 text = HexaPDF::Layout::TextFragment.create(char,
@@ -790,10 +805,10 @@ module Submissions
     def build_pdfs_index(submission, submitter: nil, flatten: true)
       latest_submitter = find_last_submitter(submission, submitter:)
 
-      Submissions::EnsureResultGenerated.call(latest_submitter) if latest_submitter
+      documents   = Submissions::EnsureResultGenerated.call(latest_submitter) if latest_submitter
+      documents ||= submission.schema_documents
 
-      documents   = latest_submitter&.documents&.preload(:blob).to_a.presence
-      documents ||= submission.schema_documents.preload(:blob)
+      ActiveRecord::Associations::Preloader.new(records: documents, associations: [:blob]).call
 
       attachment_uuids = Submissions.filtered_conditions_schema(submission).pluck('attachment_uuid')
       attachments_index = documents.index_by { |a| a.metadata['original_uuid'] || a.uuid }

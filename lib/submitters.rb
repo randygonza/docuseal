@@ -13,7 +13,7 @@ module Submitters
   UnableToSendCode = Class.new(StandardError)
   InvalidOtp = Class.new(StandardError)
   MaliciousFileExtension = Class.new(StandardError)
-  ArgumentError = Class.new(StandardError)
+  ParamsError = Class.new(StandardError)
 
   DANGEROUS_EXTENSIONS = Set.new(%w[
     exe com bat cmd scr pif vbs vbe js jse wsf wsh msi msp
@@ -24,6 +24,8 @@ module Submitters
     appxbundle msix msixbundle diagcab diagpkg cpl msc ocx
     drv scr ins isp mst paf prf shb shs slk ws wsc inf1 inf2
   ].freeze)
+
+  FILES_TTL = 5.minutes
 
   module_function
 
@@ -133,12 +135,12 @@ module Submitters
                                                filename: file.original_filename,
                                                content_type: file.content_type)
       else
-        raise ArgumentError, 'file param is missing'
+        raise ParamsError, 'file param is missing'
       end
 
     ActiveStorage::Attachment.create!(
       blob:,
-      name: params[:name],
+      name: 'attachments',
       record: submitter
     )
   end
@@ -252,6 +254,36 @@ module Submitters
     raise InvalidOtp, I18n.t(:invalid_code) unless EmailVerificationCodes.verify(otp, link_2fa_key)
 
     true
+  end
+
+  def build_document_urls(submitter, ttl: FILES_TTL)
+    filename_format = AccountConfig.find_or_initialize_by(account_id: submitter.account_id,
+                                                          key: AccountConfig::DOCUMENT_FILENAME_FORMAT_KEY)&.value
+
+    select_attachments_for_download(submitter).map do |attachment|
+      ActiveStorage::Blob.proxy_path(
+        attachment.blob,
+        expires_at: ttl.from_now.to_i,
+        filename: build_document_filename(submitter, attachment.blob, filename_format)
+      )
+    end
+  end
+
+  def build_combined_url(submitter, ttl: FILES_TTL)
+    return if submitter.submission.submitters.exists?(completed_at: nil)
+    return if submitter.submission.submitters.order(:completed_at).last != submitter
+
+    attachment = submitter.submission.combined_document_attachment
+    attachment ||= Submissions::EnsureCombinedGenerated.call(submitter)
+
+    filename_format = AccountConfig.find_or_initialize_by(account_id: submitter.account_id,
+                                                          key: AccountConfig::DOCUMENT_FILENAME_FORMAT_KEY)&.value
+
+    ActiveStorage::Blob.proxy_path(
+      attachment.blob,
+      expires_at: ttl.from_now.to_i,
+      filename: build_document_filename(submitter, attachment.blob, filename_format)
+    )
   end
 
   def populate_completed_is_first

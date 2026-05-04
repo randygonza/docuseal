@@ -71,12 +71,13 @@ Rails.application.routes.draw do
   resources :submissions, only: %i[show destroy] do
     resources :unarchive, only: %i[create], controller: 'submissions_unarchive'
     resources :events, only: %i[index], controller: 'submission_events'
+    resources :download, only: %i[index], controller: 'submissions_download'
   end
   resources :submitters, only: %i[edit update]
   resources :console_redirect, only: %i[index]
   resources :upgrade, only: %i[index], controller: 'console_redirect'
   resources :manage, only: %i[index], controller: 'console_redirect'
-  resource :testing_account, only: %i[show destroy]
+  resource :testing_account, only: %i[create destroy]
   resources :testing_api_settings, only: %i[index]
   resources :submitters_autocomplete, only: %i[index]
   resources :submitters_resubmit, only: %i[update]
@@ -107,6 +108,7 @@ Rails.application.routes.draw do
     resource :code_modal, only: %i[show], controller: 'templates_code_modal'
     resource :preferences, only: %i[show create destroy], controller: 'templates_preferences'
     resource :share_link, only: %i[show create], controller: 'templates_share_link'
+    resource :share_link_qr, only: %i[show], controller: 'templates_share_link_qr'
     resources :recipients, only: %i[create], controller: 'templates_recipients'
     resources :prefillable_fields, only: %i[create], controller: 'templates_prefillable_fields'
     resources :submissions_export, only: %i[index new]
@@ -144,23 +146,29 @@ Rails.application.routes.draw do
   resources :submit_form, only: %i[show update], path: 's', param: 'slug' do
     resources :values, only: %i[index], controller: 'submit_form_values'
     resources :download, only: %i[index], controller: 'submit_form_download'
+    resources :documents, only: %i[index], controller: 'submit_form_completed_download'
     resources :decline, only: %i[create], controller: 'submit_form_decline'
+    resources :delegate, only: %i[create], controller: 'submit_form_delegate'
     resources :invite, only: %i[create], controller: 'submit_form_invite'
+    resources :metadata, only: %i[index], controller: 'submit_form_metadata'
+    resources :debug, only: %i[index], controller: 'submissions_debug' if Rails.env.development?
     get :completed
+    get :delegated
   end
 
   resources :submit_form_draw_signature, only: %i[show], path: 'p', param: 'slug'
 
   resources :submissions_preview, only: %i[show], path: 'e', param: 'slug' do
     get :completed
+    resources :download, only: %i[index], controller: 'submissions_preview_download'
   end
 
   resources :send_submission_email, only: %i[create]
 
-  resources :submitters, only: %i[], param: 'slug' do
-    resources :download, only: %i[index], controller: 'submissions_download'
+  resources :submitters, only: %i[] do
+    resources :download, only: %i[index], controller: 'submitters_download', constraints: { submitter_id: /\d+/ }
+    resources :download, only: %i[index], controller: 'submit_form_completed_download'
     resources :send_email, only: %i[create], controller: 'submitters_send_email'
-    resources :debug, only: %i[index], controller: 'submissions_debug' if Rails.env.development?
   end
 
   scope '/settings', as: :settings do
